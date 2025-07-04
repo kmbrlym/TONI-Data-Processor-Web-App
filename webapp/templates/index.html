@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TONI Data Processor</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f7f7f7; margin: 0; padding: 0; }
+        .container { max-width: 500px; margin: 60px auto; background: #fff; padding: 30px 40px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: #333; }
+        label, select, input[type=file], input[type=text] { display: block; width: 100%; margin-bottom: 15px; }
+        input[type=submit] { background: #007bff; color: #fff; border: none; padding: 12px; border-radius: 4px; cursor: pointer; width: 100%; font-size: 16px; }
+        input[type=submit]:hover { background: #0056b3; }
+        .note { color: #666; font-size: 14px; margin-bottom: 20px; }
+    </style>
+    <script>
+        function toggleLocationField() {
+            var filetype = document.getElementById('filetype').value;
+            var locationField = document.getElementById('location-field');
+            if (filetype === 'pdf') {
+                locationField.style.display = 'block';
+                document.getElementById('location').required = true;
+            } else {
+                locationField.style.display = 'none';
+                document.getElementById('location').required = false;
+            }
+        }
+        window.onload = function() {
+            toggleLocationField();
+            document.getElementById('filetype').addEventListener('change', toggleLocationField);
+        };
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>TONI Data Processor</h1>
+        <form method="post" enctype="multipart/form-data">
+            <label for="filetype">Select file type:</label>
+            <select name="filetype" id="filetype" required>
+                <option value="pdf">PDF (extract & structure data)</option>
+                <option value="excel">Excel (deduplicate rows)</option>
+            </select>
+            <div id="location-field">
+                <label for="location">Enter location (for PDF only):</label>
+                <input type="text" name="location" id="location" placeholder="e.g. Township of Hornepayne">
+            </div>
+            <label for="file">Choose your file:</label>
+            <input type="file" name="file" id="file" required>
+            <input type="submit" value="Upload and Process">
+        </form>
+        <div class="note">
+            <b>PDF:</b> Upload a cemetery PDF to extract structured data.<br>
+            <b>Excel:</b> Upload an Excel file to remove exact duplicate rows.<br>
+            The processed file will be downloaded automatically.
+        </div>
+    </div>
+</body>
+</html> 
